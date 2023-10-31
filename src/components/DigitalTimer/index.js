@@ -8,24 +8,27 @@ class DigitalTimer extends Component {
     this.state = {minutes: 25, seconds: 60, running: false}
   }
 
-  //   componentWillMount() {
-  //     this.clearTimerInterval()
-  //   }
+  componentWillUnmount() {
+    this.clearTimerInterval()
+  }
 
   clearTimerInterval = () => clearInterval(this.timerId)
 
   onStartTimer = () => {
     console.log('Started Timer')
     this.setState(prevState => ({running: !prevState.running}))
+
     this.timerId = setInterval(() => {
+      const {seconds} = this.state
+      console.log(seconds)
       this.setState(
         prevState =>
           prevState.running === true && {
-            seconds: prevState.seconds === 0 ? 60 : prevState.seconds - 1,
             minutes:
-              prevState.seconds === 0
+              prevState.seconds === 1
                 ? prevState.minutes - 1
                 : prevState.minutes,
+            seconds: prevState.seconds === 1 ? 60 : prevState.seconds - 1,
           },
       )
     }, 1000)
