@@ -8,10 +8,9 @@ class DigitalTimer extends Component {
     this.state = {minutes: 25, seconds: 60, running: false}
   }
 
-  // eslint-disable-next-line camelcase
-  componentWillMount() {
-    this.clearTimerInterval()
-  }
+  //   componentWillMount() {
+  //     this.clearTimerInterval()
+  //   }
 
   clearTimerInterval = () => clearInterval(this.timerId)
 
@@ -86,7 +85,7 @@ class DigitalTimer extends Component {
               {running === false && (
                 <div className="icon-text-cont">
                   <button
-                    className="icon-btn"
+                    className="icon-btn icon-text"
                     type="button"
                     onClick={this.onStartTimer}
                   >
@@ -94,15 +93,15 @@ class DigitalTimer extends Component {
                       className="icon"
                       src="https://assets.ccbp.in/frontend/react-js/play-icon-img.png"
                       alt="play icon"
-                    />
+                    />{' '}
+                    Start
                   </button>
-                  <p className="icon-text">Start</p>
                 </div>
               )}
               {!running === false && (
                 <div className="icon-text-cont">
                   <button
-                    className="icon-btn"
+                    className="icon-btn icon-text"
                     type="button"
                     onClick={this.onPauseTimer}
                   >
@@ -110,14 +109,14 @@ class DigitalTimer extends Component {
                       className="icon"
                       src="https://assets.ccbp.in/frontend/react-js/pause-icon-img.png"
                       alt="pause icon"
-                    />
+                    />{' '}
+                    Pause
                   </button>
-                  <p className="icon-text">Pause</p>
                 </div>
               )}
               <div className="icon-text-cont">
                 <button
-                  className="icon-btn"
+                  className="icon-btn icon-text"
                   type="button"
                   onClick={this.onResetTimer}
                 >
@@ -125,9 +124,9 @@ class DigitalTimer extends Component {
                     className="icon"
                     src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
                     alt="reset icon"
-                  />
+                  />{' '}
+                  Reset
                 </button>
-                <p className="icon-text">Reset</p>
               </div>
             </div>
             <p className="description">Set Timer Limit</p>
