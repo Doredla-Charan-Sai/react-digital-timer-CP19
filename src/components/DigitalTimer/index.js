@@ -5,7 +5,7 @@ import './index.css'
 class DigitalTimer extends Component {
   constructor(props) {
     super(props)
-    this.state = {minutes: 25, seconds: 60, running: false}
+    this.state = {minutes: 25, seconds: 0, running: false}
   }
 
   componentWillUnmount() {
@@ -17,20 +17,21 @@ class DigitalTimer extends Component {
   onStartTimer = () => {
     console.log('Started Timer')
     this.setState(prevState => ({running: !prevState.running}))
-
     this.timerId = setInterval(() => {
-      const {seconds} = this.state
+      const {seconds, minutes} = this.state
+      const totalTimeInSec = minutes * 60 - seconds
       console.log(seconds)
-      this.setState(
-        prevState =>
-          prevState.running === true && {
-            minutes:
-              prevState.seconds === 1
-                ? prevState.minutes - 1
-                : prevState.minutes,
-            seconds: prevState.seconds === 1 ? 60 : prevState.seconds - 1,
-          },
-      )
+      if (totalTimeInSec === 0) {
+        this.clearTimerInterval()
+        this.setState({running: false})
+      } else {
+        this.setState(
+          prevState =>
+            prevState.running === true && {
+              seconds: prevState.seconds + 1,
+            },
+        )
+      }
     }, 1000)
   }
 
@@ -41,7 +42,7 @@ class DigitalTimer extends Component {
 
   onResetTimer = () => {
     this.clearTimerInterval()
-    this.setState({minutes: 25, seconds: 60, running: false})
+    this.setState({minutes: 25, seconds: 0, running: false})
   }
 
   decreaseTimer = () => {
@@ -49,7 +50,7 @@ class DigitalTimer extends Component {
     if (running === false) {
       this.setState(prevState => ({
         minutes: prevState.minutes - 1,
-        seconds: 60,
+        seconds: 0,
       }))
     }
   }
@@ -59,13 +60,14 @@ class DigitalTimer extends Component {
     if (running === false) {
       this.setState(prevState => ({
         minutes: prevState.minutes + 1,
-        seconds: 60,
+        seconds: 0,
       }))
     }
   }
 
   render() {
     const {minutes, seconds, running} = this.state
+    const totalTimeInSec = minutes * 60 - seconds
     console.log(minutes, seconds)
     return (
       <div className="bg-cont">
@@ -74,9 +76,13 @@ class DigitalTimer extends Component {
           <div className="img-cont">
             <div className="cont">
               <h1 className="time">
-                {minutes}:{seconds === 60 && '00'}
-                {seconds < 10 && `0${seconds}`}
-                {seconds >= 10 && seconds !== 60 && seconds}
+                {Math.floor(totalTimeInSec / 60) > 9
+                  ? Math.floor(totalTimeInSec / 60)
+                  : `0${Math.floor(totalTimeInSec / 60)}`}
+                :
+                {Math.floor(totalTimeInSec % 60) > 9
+                  ? Math.floor(totalTimeInSec % 60)
+                  : `0${Math.floor(totalTimeInSec % 60)}`}
               </h1>
               <p className="pause-text">
                 {running === true ? 'Running' : 'Paused'}
